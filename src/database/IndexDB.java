@@ -19,7 +19,7 @@ public class IndexDB extends Database{
 	
 	public void add(String token,TokenDocuments docs){
 		if(exist(token)) {
-			throw new IllegalArgumentException("token dÃ©ja ajouter");
+			throw new IllegalArgumentException("token déja ajouter");
 		}
 		MongoCollection<Document> tokens=db().getCollection(C_INDEX);
 		Document tokenDoc = new Document(TOKEN,token)
@@ -36,6 +36,12 @@ public class IndexDB extends Database{
 	public void delete(String token){
 		MongoCollection<Document> tokens = db().getCollection(C_INDEX);
 		tokens.deleteOne(Filters.eq(TOKEN,token));
+	}
+	
+	public void addDocPosition(String token,String docId,int position){
+		TokenDocuments doc=getDocs(token);
+		doc.addDocumentPostion(docId, position);
+		setDocs(token,doc);
 	}
 	
 	public TokenDocuments getDocs(String token){
@@ -73,10 +79,4 @@ public class IndexDB extends Database{
 		}
 		return index;
 	}
-	
-	
-	
-	
-	
-
 }

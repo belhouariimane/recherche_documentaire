@@ -27,7 +27,7 @@ public class traitementDonees {
 	public  static ArrayList<Document> listeDesDoc =new ArrayList<Document>();
 	public static ArrayList<String> stopWord=new ArrayList<String>();
 	//Methode qui permet de parser un repertoire et de retrouver ses fichiers
-	private static void findFilesRecursively(File file, ArrayList<File> all, final String extension) {
+	private  void findFilesRecursively(File file, ArrayList<File> all, final String extension) {
 	    //Liste des fichiers correspondant a l'extension souhaitee
 	    final File[] children = file.listFiles(new FileFilter() {
 	    	public boolean accept(File f) {
@@ -42,7 +42,7 @@ public class traitementDonees {
 	        }
 	    }
 	}
-	public  static void allDoc() {
+	public   void allDoc() {
 		 final 	ArrayList<File> all = new ArrayList<File>();
 		    findFilesRecursively(new File("C:\\Users\\IMANE\\Desktop\\RechercheDoc\\AP"), all, "");
 		    for (File file : all) {
@@ -50,7 +50,7 @@ public class traitementDonees {
 		    }
 		    System.out.println("end of all docs");
 	}
-	private static Document convertStringToXMLDocument(String xmlString)
+	private  Document convertStringToXMLDocument(String xmlString)
     {
         //Parser that produces DOM object trees from XML content
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -72,7 +72,7 @@ public class traitementDonees {
         }
         return null;
     }
-	private static void splitDoc(File f) {
+	private  void splitDoc(File f) {
 		BufferedReader in;
 		try {
 			in = new BufferedReader(new FileReader(f));
@@ -97,32 +97,40 @@ public class traitementDonees {
 		}
 	    System.out.println("end of split doc");
 	}
-	public static void InfoDoc() throws ParserConfigurationException, IOException {
+	
+	public void InfoDoc() throws ParserConfigurationException, IOException {
 		IndexDB bd=new IndexDB();
 		allDoc();
+		ArrayList<String> stopswords= stopWords();
 		for(Document f :listeDesDoc ) {
 				NodeList Docnum = f.getElementsByTagName("DOCNO");
 				
 				Node node = Docnum.item(0);
 			    System.out.println("");    //Just a separator
 				Element eElement = (Element) node;
-			    System.out.println("doc num : "    +eElement.getTextContent());
-					    
+			   // System.out.println("doc num : "    +eElement.getTextContent());
+			    
 				NodeList nList = f.getElementsByTagName("TEXT");
 			    Node node1 = nList.item(0);
 				System.out.println("");    //Just a separator
 				Element eElement1 = (Element) node1;
-				System.out.println("doc text : "    +eElement1.getTextContent());
+				//System.out.println("doc text : "    +eElement1.getTextContent());
 				//traitement base de donnees
 				String text=eElement1.getTextContent();
-				String[]txt= text.split("\\s+\\n+");
+				String[]txt= text.split("\\s+|\\n+");
 				int position = 0;
+				for(String t:txt ) {
+				System.out.println(t);
+				System.out.println("\n");
+				}
 				for(int i=0;i<txt.length;i++) {
 					 position += txt[i].length();
 					if(bd.exist(txt[i])) {
-					
+						System.out.println("exist"+bd);
+						bd.addDocPosition(txt[i],eElement.getTextContent() , position+i);
 					}else{
-						if(stopWords().contains(txt)) {
+						if(!stopswords.contains(txt[i])) {
+							System.out.println(txt[i]);
 							TokenDocument td=new TokenDocument(eElement.getTextContent());
 							td.addPosition(position+i);
 							TokenDocuments tds=new TokenDocuments();
@@ -138,7 +146,7 @@ public class traitementDonees {
 			
 		//}
 	}
-	public static ArrayList<String> stopWords() throws IOException{
+	public  ArrayList<String> stopWords() throws IOException{
 		BufferedReader in;
 		try {
 			in = new BufferedReader(new FileReader("C:\\Users\\IMANE\\Desktop\\RechercheDoc\\stopwords.txt"));

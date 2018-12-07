@@ -49,7 +49,7 @@ public class TokenDocuments implements Serializable{
 		if(!this.documents.isEmpty()){
 			int i=0;
 			do{
-				if(this.documents.get(i).getDocID()==id){
+				if(this.documents.get(i).getDocID().equals(id)){
 						found=true;
 				}		
 				i++;
@@ -62,13 +62,13 @@ public class TokenDocuments implements Serializable{
 		boolean found=false;
 		if(!this.documents.isEmpty()){
 			int i=0;
-			while((i<this.documents.size()) && !found ){
-				if(this.documents.get(i).getDocID()==id){
-					found=true;
-					doc=this.documents.get(i);
-				}	
+			do{
+				if(this.documents.get(i).getDocID().equals(id)){
+						found=true;
+						doc=documents.get(i);
+				}		
 				i++;
-			}
+			}while(!found && (i<this.documents.size()));
 		}
 		return doc;
 	}

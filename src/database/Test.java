@@ -14,12 +14,13 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 		IndexDB indexDB=new IndexDB();
-		
 		TokenDocuments tokens=new TokenDocuments();
 		tokens.addDocument("doc3");
 		tokens.addDocumentPostion("doc4",125);
+		tokens.addDocumentPostion("doc4",23);
 		
-		indexDB.add("token5",tokens);
+		indexDB.add("token6",tokens);
+		indexDB.addDocPosition("token6", "doc4", 34);
 		Hashtable<String,TokenDocuments> index=indexDB.getIndex();
 		Set keys = index.keySet();
 		 
