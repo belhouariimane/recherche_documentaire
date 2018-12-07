@@ -27,7 +27,7 @@ public class IndexDB extends Database{
 		tokens.insertOne(tokenDoc);
 	}
 
-	private boolean exist(String token) {
+	public boolean exist(String token) {
 		MongoCollection<Document> tokens = db().getCollection(C_INDEX);
 	    FindIterable<Document> iterable = tokens.find(Filters.eq(TOKEN, token));
 		return iterable.first() != null;
