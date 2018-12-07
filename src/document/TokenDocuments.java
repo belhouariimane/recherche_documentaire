@@ -29,7 +29,9 @@ public class TokenDocuments implements Serializable{
 	public void addDocument(String id){
 		documents.add(new TokenDocument(id));
 	}
-	
+	public void addDoc(TokenDocument doc) {
+		documents.add(doc);
+	}
 	public void addDocumentPostion(String id,int p){
 		TokenDocument doc=getDocument(id);
 		doc.addPosition(p);

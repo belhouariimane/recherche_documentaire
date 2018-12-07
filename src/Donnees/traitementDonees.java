@@ -20,6 +20,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import database.IndexDB;
+import document.TokenDocument;
+import document.TokenDocuments;
 
 public class traitementDonees {
 	public  static ArrayList<Document> listeDesDoc =new ArrayList<Document>();
@@ -114,13 +116,18 @@ public class traitementDonees {
 				//traitement base de donnees
 				String text=eElement1.getTextContent();
 				String[]txt= text.split("\\s+\\n+");
-				
-				for(String t:txt) {
-					if(bd.exist(t)) {
-						
+				int position = 0;
+				for(int i=0;i<txt.length;i++) {
+					 position += txt[i].length();
+					if(bd.exist(txt[i])) {
+					
 					}else{
-						if(stopWords().contains(t)) {
-							
+						if(stopWords().contains(txt)) {
+							TokenDocument td=new TokenDocument(eElement.getTextContent());
+							td.addPosition(position+i);
+							TokenDocuments tds=new TokenDocuments();
+							tds.addDoc(td);
+							bd.add(txt[i],tds );
 						}
 				}
 			}

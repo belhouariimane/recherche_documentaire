@@ -22,7 +22,7 @@ public class TokenDocument implements Serializable{
 		return this.id;
 	}
 	
-	TokenDocument(String num){
+	public TokenDocument(String num){
 		this.docID=num;
 		position=new ArrayList<Integer>();
 	}
